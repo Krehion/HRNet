@@ -1,7 +1,8 @@
-import "../../style/components/_createemployeeform.scss";
-
 import { useState } from "react";
-import Modal from "../modal/Modal";
+import Modal from "react-amazing-modal-component";
+
+import "../../style/components/_createemployeeform.scss";
+import "../../style/components/_modal.scss";
 
 export default function CreateEmployeeForm() {
 	const [isModalOpen, setIsModalOpen] = useState(false);

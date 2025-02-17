@@ -1,8 +1,11 @@
 import "../../style/components/_createemployeeform.scss";
 
 import { useState } from "react";
+import Modal from "../modal/Modal";
 
 export default function CreateEmployeeForm() {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	const [formData, setFormData] = useState({
 		firstName: "",
 		lastName: "",
@@ -15,15 +18,23 @@ export default function CreateEmployeeForm() {
 		department: ""
 	});
 
-	const handleChange = (e) => {
+	const handleChange = (event) => {
 		setFormData({
 			...formData,
-			[e.target.id]: e.target.value
+			[event.target.id]: event.target.value
 		});
 	};
 
+	const handleSubmit = (event) => {
+		event.preventDefault(); // avoid page refresh
+
+		console.log("Form submitted:", formData); // handle data storage here later
+
+		setIsModalOpen(true); // Open modal after submitting
+	};
+
 	return (
-		<form id="create-employee">
+		<form id="create-employee" onSubmit={handleSubmit}>
 			<label htmlFor="first-name">First Name</label>
 			<input type="text" id="firstName" value={formData.firstName} onChange={handleChange} />
 
@@ -65,6 +76,9 @@ export default function CreateEmployeeForm() {
 			</select>
 
 			<button type="submit">Save</button>
+			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+				<p>Employee created!</p>
+			</Modal>
 		</form>
 	);
 }

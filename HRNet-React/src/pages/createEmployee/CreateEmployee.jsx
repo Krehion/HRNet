@@ -11,13 +11,12 @@ export default function CreateEmployee() {
 					<img src="/src/assets/logo.png" className="logo" />
 					<h1>HRNet</h1>
 				</div>
-				<div role="separator" className="separator">
-					<Link to="employee-list">View current employees</Link>
-				</div>
+				<div role="separator" className="separator"></div>
 				<h2>Create employee</h2>
 
 				<CreateEmployeeForm />
-				
+
+				<Link to="employee-list">View current employees</Link>
 			</div>
 		</div>
 	);

@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+	createColumnHelper,
+	flexRender,
+	getCoreRowModel,
+	useReactTable,
+	getSortedRowModel
+} from "@tanstack/react-table";
 
 import { Link } from "react-router-dom";
 
@@ -15,7 +21,7 @@ const defaultData = [
 		street: "123 Main Street",
 		city: "Cityville",
 		state: "AL",
-		zipCode: 1
+		zipCode: 12345
 	},
 	{
 		firstName: "Jane",
@@ -23,10 +29,10 @@ const defaultData = [
 		startDate: new Date("2018-06-15"),
 		department: "Marketing",
 		birthDate: new Date("1990-02-28"),
-		street: "456 Fake Boulevard",
+		street: "456 Wide Boulevard",
 		city: "Bigtown",
 		state: "AL",
-		zipCode: 1
+		zipCode: 67890
 	},
 	{
 		firstName: "Mark",
@@ -35,9 +41,9 @@ const defaultData = [
 		department: "Legal",
 		birthDate: new Date("1999-09-21"),
 		street: "78 New Road",
-		city: "Largeburg",
+		city: "Smallburg",
 		state: "AL",
-		zipCode: 1
+		zipCode: 54321
 	}
 ];
 
@@ -47,27 +53,32 @@ const columns = [
 	columnHelper.accessor("firstName", {
 		header: () => <span>First name</span>,
 		cell: (info) => info.getValue(),
-		footer: (info) => info.column.id
+		footer: (info) => info.column.id,
+		sortingFn: "alphanumeric"
 	}),
 	columnHelper.accessor((row) => row.lastName, {
 		id: "lastName",
-		cell: (info) => <i>{info.getValue()}</i>,
+		cell: (info) => info.getValue(),
 		header: () => <span>Last name</span>,
-		footer: (info) => info.column.id
+		footer: (info) => info.column.id,
+		sortingFn: "alphanumeric"
 	}),
 	columnHelper.accessor("startDate", {
 		header: () => <span>Start date</span>,
 		cell: (info) => info.getValue().toLocaleDateString(),
-		footer: (info) => info.column.id
+		footer: (info) => info.column.id,
+		sortingFn: "datetime"
 	}),
 	columnHelper.accessor("department", {
 		header: () => <span>Department</span>,
-		footer: (info) => info.column.id
+		footer: (info) => info.column.id,
+		sortingFn: "alphanumeric"
 	}),
 	columnHelper.accessor("birthDate", {
 		header: "Date of birth",
 		cell: (info) => info.getValue().toLocaleDateString(),
-		footer: (info) => info.column.id
+		footer: (info) => info.column.id,
+		sortingFn: "datetime"
 	}),
 	columnHelper.accessor("street", {
 		header: "Street",
@@ -77,16 +88,19 @@ const columns = [
 	columnHelper.accessor("city", {
 		header: "City",
 		cell: (info) => info.getValue(),
-		footer: (info) => info.column.id
+		footer: (info) => info.column.id,
+		sortingFn: "alphanumeric"
 	}),
 	columnHelper.accessor("state", {
 		header: "State",
 		cell: (info) => info.getValue(),
-		footer: (info) => info.column.id
+		footer: (info) => info.column.id,
+		sortingFn: "alphanumeric"
 	}),
 	columnHelper.accessor("zipCode", {
 		header: "Zip code",
-		footer: (info) => info.column.id
+		footer: (info) => info.column.id,
+		sortingFn: "alphanumeric"
 	})
 ];
 
@@ -96,19 +110,53 @@ export default function EmployeeList() {
 	const table = useReactTable({
 		data,
 		columns,
-		getCoreRowModel: getCoreRowModel()
+		getCoreRowModel: getCoreRowModel(),
+		getSortedRowModel: getSortedRowModel()
 	});
 	return (
 		<div className="global-container list-bkgd">
 			<div className="list-container">
 				<h1>Current employees</h1>
-				<table>
+				<div className="list-controls">
+					<label className="list-controls__length">
+						Show&nbsp;
+						<select>
+							<option value="10">10</option>
+							<option value="25">25</option>
+							<option value="50">50</option>
+							<option value="100">100</option>
+						</select>
+						&nbsp;entries
+					</label>
+					<label className="list-controls__filter">
+						Search:&nbsp;
+						<input type="search" />
+					</label>
+				</div>
+				<table className="employee-table">
 					<thead>
 						{table.getHeaderGroups().map((headerGroup) => (
 							<tr key={headerGroup.id}>
 								{headerGroup.headers.map((header) => (
-									<th key={header.id}>
-										{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+									<th
+										key={header.id}
+										colSpan={header.colSpan}
+										{...(header.column.getCanSort() && {
+											className: "sortable",
+											onClick: header.column.getToggleSortingHandler()
+										})}>
+										{header.isPlaceholder ? null : (
+											<div className="header-content">
+												{flexRender(header.column.columnDef.header, header.getContext())}
+												<i
+													className={`fa-solid ${
+														{
+															asc: "fa-sort-up",
+															desc: "fa-sort-down"
+														}[header.column.getIsSorted()] ?? "fa-sort"
+													}`}></i>
+											</div>
+										)}
 									</th>
 								))}
 							</tr>
@@ -123,8 +171,39 @@ export default function EmployeeList() {
 							</tr>
 						))}
 					</tbody>
-					<tfoot>{/* footer here */}</tfoot>
 				</table>
+				<div className="employee-table--footer">
+					<div className="list-counter">Showing X to X of {table.getPrePaginationRowModel().rows.length} entries</div>
+					<div className="pagination">
+						<button
+							className="pagination--btn"
+							onClick={() => table.setPageIndex(0)}
+							disabled={!table.getCanPreviousPage()}>
+							{"<<"}
+						</button>
+						<button
+							className="pagination--btn"
+							onClick={() => table.previousPage()}
+							disabled={!table.getCanPreviousPage()}>
+							{"<"}
+						</button>
+						<span>
+							Page&nbsp;
+							<strong>
+								{table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+							</strong>
+						</span>
+						<button className="pagination--btn" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+							{">"}
+						</button>
+						<button
+							className="pagination--btn"
+							onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+							disabled={!table.getCanNextPage()}>
+							{">>"}
+						</button>
+					</div>
+				</div>
 				<Link to="/">Home</Link>
 			</div>
 		</div>

@@ -4,7 +4,8 @@ import {
 	flexRender,
 	getCoreRowModel,
 	useReactTable,
-	getSortedRowModel
+	getSortedRowModel,
+	getFilteredRowModel
 } from "@tanstack/react-table";
 
 import { Link } from "react-router-dom";
@@ -106,13 +107,27 @@ const columns = [
 
 export default function EmployeeList() {
 	const [data] = useState([...defaultData]);
+	const [searchQuery, setSearchQuery] = useState(""); // Store search input
 
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
-		getSortedRowModel: getSortedRowModel()
+		getSortedRowModel: getSortedRowModel(), // Enables sorting
+		getFilteredRowModel: getFilteredRowModel(), // Enables filtering
+		globalFilterFn: (row, columnId, filterValue) => {
+			// Convert everything to lowercase for case-insensitive search
+			const cellValue = String(row.getValue(columnId)).toLowerCase();
+			return cellValue.includes(filterValue.toLowerCase());
+		}
 	});
+
+	// Update global filter whenever search input changes
+	const handleSearch = (e) => {
+		setSearchQuery(e.target.value);
+		table.setGlobalFilter(e.target.value);
+	};
+
 	return (
 		<div className="global-container list-bkgd">
 			<div className="list-container">
@@ -120,7 +135,9 @@ export default function EmployeeList() {
 				<div className="list-controls">
 					<label className="list-controls__length">
 						Show&nbsp;
-						<select>
+						<select
+							value={table.getState().pagination.pageSize}
+							onChange={(e) => table.setPageSize(Number(e.target.value))}>
 							<option value="10">10</option>
 							<option value="25">25</option>
 							<option value="50">50</option>
@@ -130,7 +147,7 @@ export default function EmployeeList() {
 					</label>
 					<label className="list-controls__filter">
 						Search:&nbsp;
-						<input type="search" />
+						<input type="search" value={searchQuery} onChange={handleSearch} />
 					</label>
 				</div>
 				<table className="employee-table">
@@ -173,7 +190,16 @@ export default function EmployeeList() {
 					</tbody>
 				</table>
 				<div className="employee-table--footer">
-					<div className="list-counter">Showing X to X of {table.getPrePaginationRowModel().rows.length} entries</div>
+					<div className="list-counter">
+						Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}
+						&nbsp;to&nbsp;
+						{Math.min(
+							(table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
+							table.getPrePaginationRowModel().rows.length
+						)}
+						&nbsp;of&nbsp;
+						{table.getPrePaginationRowModel().rows.length} entries
+					</div>
 					<div className="pagination">
 						<button
 							className="pagination--btn"

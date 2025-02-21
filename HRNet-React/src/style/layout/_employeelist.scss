@@ -1,7 +1,7 @@
 @import "../base/_variables.scss";
 
 .list-bkgd {
-	background: url(../../assets/list-bkgd.jpg) center no-repeat;
+	background: url(../../assets/list-bkgd.jpg) center;
 	background-size: cover;
 }
 
@@ -38,6 +38,10 @@
 	tbody {
 		border-top: 1px solid black;
 		border-bottom: 1px solid black;
+
+		tr:hover {
+			background-color: rgba(109, 133, 15, 0.4);
+		}
 	}
 
 	tr:nth-child(even) {

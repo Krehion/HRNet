@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Modal from "react-amazing-modal-component";
+import DatePicker from "react-datepicker";
 
 import "../../style/components/_createemployeeform.scss";
 import "../../style/components/_modal.scss";
+import "../../style/components/_datepicker.scss";
 
 export default function CreateEmployeeForm() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,6 +28,9 @@ export default function CreateEmployeeForm() {
 		});
 	};
 
+	const [startDate, setStartDate] = useState(new Date());
+	const [birthDate, setBirthDate] = useState(new Date());
+
 	const handleSubmit = (event) => {
 		event.preventDefault(); // avoid page refresh
 
@@ -43,10 +48,10 @@ export default function CreateEmployeeForm() {
 			<input type="text" id="lastName" value={formData.lastName} onChange={handleChange} />
 
 			<label htmlFor="date-of-birth">Date of Birth</label>
-			<input type="date" id="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} />
+			<DatePicker showIcon selected={birthDate} onChange={(date) => setBirthDate(date)} icon="fa fa-calendar" />
 
 			<label htmlFor="start-date">Start Date</label>
-			<input type="date" id="startDate" value={formData.startDate} onChange={handleChange} />
+			<DatePicker showIcon selected={startDate} onChange={(date) => setStartDate(date)} icon="fa fa-calendar" />
 
 			<fieldset>
 				<legend>Address</legend>
@@ -76,7 +81,7 @@ export default function CreateEmployeeForm() {
 				<option value="Legal">Legal</option>
 			</select>
 
-			<button type="submit">Save</button>
+			<button type="submit" className="save-btn">Save</button>
 			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
 				<p>Employee created!</p>
 			</Modal>

@@ -3,6 +3,7 @@
 .index-bkgd {
 	background: url(../../assets/index-bkgd.jpg) top no-repeat;
 	background-size: cover;
+	background-attachment: fixed;
 }
 
 .form-container {
@@ -13,7 +14,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 40px;
+	margin: 40px 0;
 
 	.separator {
 		border-bottom: 1px solid $green-dark;

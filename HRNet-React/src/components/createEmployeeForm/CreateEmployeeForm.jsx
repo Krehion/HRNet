@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Modal from "react-amazing-modal-component";
+import SuccessModal from "../successModal/SuccessModal";
+
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 
 import "../../style/components/_createemployeeform.scss";
-import "../../style/components/_modal.scss";
 import "../../style/components/_datepicker.scss";
 
 export default function CreateEmployeeForm() {
@@ -210,9 +210,7 @@ export default function CreateEmployeeForm() {
 			<button type="submit" className="save-btn">
 				Save
 			</button>
-			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-				<p>Employee created!</p>
-			</Modal>
+			<SuccessModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 		</form>
 	);
 }

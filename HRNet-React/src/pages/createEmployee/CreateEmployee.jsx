@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import CreateEmployeeForm from "../../components/createEmployeeForm/createEmployeeForm";
+import CreateEmployeeForm from "../../components/createEmployeeForm/CreateEmployeeForm";
 
 import "../../style/layout/_createemployee.scss";
 

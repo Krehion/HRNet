@@ -1,0 +1,28 @@
+{
+  "employees": [
+    {
+      "id": "085d",
+      "firstName": "John",
+      "lastName": "Doe",
+      "dateOfBirth": "1982-01-01T20:12:54.000Z",
+      "startDate": "2025-02-01T20:12:54.000Z",
+      "street": "25 E Washington St",
+      "city": "Chicago",
+      "state": "IL",
+      "zipCode": "60602",
+      "department": "Sales"
+    },
+    {
+      "id": "3bde",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "dateOfBirth": "1995-01-01T20:13:57.000Z",
+      "startDate": "2022-01-01T20:13:57.000Z",
+      "street": "15414 N 19th Ave",
+      "city": "Phoenix",
+      "state": "AZ",
+      "zipCode": "85023",
+      "department": "Human Resources"
+    }
+  ]
+}

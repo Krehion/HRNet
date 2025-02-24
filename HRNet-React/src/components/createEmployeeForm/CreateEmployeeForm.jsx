@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAtom } from "jotai";
+import { employeeListAtom } from "../../store/employeeAtom";
 import SuccessModal from "../successModal/SuccessModal";
 import DatePicker from "react-datepicker";
 import SelectInput from "../selectInput/SelectInput";
@@ -10,19 +12,21 @@ import "../../style/components/_datepicker.scss";
 
 export default function CreateEmployeeForm() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [employeeList, setEmployeeList] = useAtom(employeeListAtom); // Global state for employees
 
 	const [formData, setFormData] = useState({
 		firstName: "",
 		lastName: "",
-		dateOfBirth: "",
-		startDate: "",
+		dateOfBirth: new Date(),
+		startDate: new Date(),
 		street: "",
 		city: "",
-		state: "",
+		state: stateList[0], // Default state
 		zipCode: "",
-		department: ""
+		department: dptList[0] // Default department
 	});
 
+	// Handle text input changes
 	const handleChange = (event) => {
 		setFormData({
 			...formData,
@@ -30,13 +34,26 @@ export default function CreateEmployeeForm() {
 		});
 	};
 
-	const [startDate, setStartDate] = useState(new Date());
-	const [birthDate, setBirthDate] = useState(new Date());
-
+	// Handle form submission
 	const handleSubmit = (event) => {
-		event.preventDefault(); // avoid page refresh
-		console.log("Form submitted:", formData); // handle data storage here later
-		setIsModalOpen(true); // Open modal after submitting
+		event.preventDefault(); // Prevent page refresh
+
+		// Create new employee object
+		const newEmployee = {
+			firstName: formData.firstName,
+			lastName: formData.lastName,
+			dateOfBirth: new Date(formData.dateOfBirth),
+			startDate: new Date(formData.startDate),
+			street: formData.street,
+			city: formData.city,
+			state: formData.state,
+			zipCode: formData.zipCode,
+			department: formData.department
+		};
+
+		setEmployeeList([...employeeList, newEmployee]); // Update global employee list
+
+		setIsModalOpen(true); // Open success modal
 	};
 
 	return (
@@ -48,10 +65,20 @@ export default function CreateEmployeeForm() {
 			<input type="text" id="lastName" value={formData.lastName} onChange={handleChange} />
 
 			<label htmlFor="date-of-birth">Date of Birth</label>
-			<DatePicker showIcon selected={birthDate} onChange={(date) => setBirthDate(date)} icon="fa fa-calendar" />
+			<DatePicker
+				showIcon
+				selected={formData.dateOfBirth}
+				onChange={(date) => setFormData({ ...formData, dateOfBirth: date })}
+				icon="fa fa-calendar"
+			/>
 
 			<label htmlFor="start-date">Start Date</label>
-			<DatePicker showIcon selected={startDate} onChange={(date) => setStartDate(date)} icon="fa fa-calendar" />
+			<DatePicker
+				showIcon
+				selected={formData.startDate}
+				onChange={(date) => setFormData({ ...formData, startDate: date })}
+				icon="fa fa-calendar"
+			/>
 
 			<fieldset>
 				<legend>Address</legend>

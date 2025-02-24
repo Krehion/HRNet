@@ -86,7 +86,7 @@ export default function EmployeeList() {
 	const [, fetchEmployees] = useAtom(fetchEmployeesAtom);
 	useEffect(() => {
 		fetchEmployees(); // Fetch employees when component mounts
-	}, []);
+	});
 
 	const [searchQuery, setSearchQuery] = useState(""); // Store search input
 

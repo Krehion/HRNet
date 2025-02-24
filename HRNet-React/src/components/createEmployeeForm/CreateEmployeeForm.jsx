@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
-import { employeeListAtom } from "../../store/employeeAtom";
+import { addEmployeeAtom } from "../../store/employeeAtom";
 import SuccessModal from "../successModal/SuccessModal";
 import DatePicker from "react-datepicker";
 import SelectInput from "../selectInput/SelectInput";
@@ -12,7 +12,7 @@ import "../../style/components/_datepicker.scss";
 
 export default function CreateEmployeeForm() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [employeeList, setEmployeeList] = useAtom(employeeListAtom); // Global state for employees
+	const [, addEmployee] = useAtom(addEmployeeAtom); // Global state for employees
 
 	const [formData, setFormData] = useState({
 		firstName: "",
@@ -38,20 +38,7 @@ export default function CreateEmployeeForm() {
 	const handleSubmit = (event) => {
 		event.preventDefault(); // Prevent page refresh
 
-		// Create new employee object
-		const newEmployee = {
-			firstName: formData.firstName,
-			lastName: formData.lastName,
-			dateOfBirth: new Date(formData.dateOfBirth),
-			startDate: new Date(formData.startDate),
-			street: formData.street,
-			city: formData.city,
-			state: formData.state,
-			zipCode: formData.zipCode,
-			department: formData.department
-		};
-
-		setEmployeeList([...employeeList, newEmployee]); // Update global employee list
+		addEmployee(formData);
 
 		setIsModalOpen(true); // Open success modal
 	};

@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
-import { employeeListAtom } from "../../store/employeeAtom";
+import { employeesAtom, fetchEmployeesAtom } from "../../store/employeeAtom";
 import {
 	createColumnHelper,
 	flexRender,
@@ -82,7 +82,12 @@ const columns = [
 ];
 
 export default function EmployeeList() {
-	const [employeeList] = useAtom(employeeListAtom);
+	const [employeeList] = useAtom(employeesAtom);
+	const [, fetchEmployees] = useAtom(fetchEmployeesAtom);
+	useEffect(() => {
+		fetchEmployees(); // Fetch employees when component mounts
+	}, []);
+
 	const [searchQuery, setSearchQuery] = useState(""); // Store search input
 
 	const table = useReactTable({

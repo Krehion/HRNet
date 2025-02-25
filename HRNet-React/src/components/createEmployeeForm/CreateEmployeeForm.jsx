@@ -45,26 +45,28 @@ export default function CreateEmployeeForm() {
 
 	return (
 		<form id="create-employee" onSubmit={handleSubmit}>
-			<label htmlFor="first-name">First Name</label>
+			<label htmlFor="firstName">First Name</label>
 			<input type="text" id="firstName" value={formData.firstName} onChange={handleChange} />
 
-			<label htmlFor="last-name">Last Name</label>
+			<label htmlFor="lastName">Last Name</label>
 			<input type="text" id="lastName" value={formData.lastName} onChange={handleChange} />
 
-			<label htmlFor="date-of-birth">Date of Birth</label>
+			<label htmlFor="dateOfBirth">Date of Birth</label>
 			<DatePicker
 				showIcon
 				selected={formData.dateOfBirth}
 				onChange={(date) => setFormData({ ...formData, dateOfBirth: date })}
 				icon="fa fa-calendar"
+				id="dateOfBirth"
 			/>
 
-			<label htmlFor="start-date">Start Date</label>
+			<label htmlFor="startDate">Start Date</label>
 			<DatePicker
 				showIcon
 				selected={formData.startDate}
 				onChange={(date) => setFormData({ ...formData, startDate: date })}
 				icon="fa fa-calendar"
+				id="startDate"
 			/>
 
 			<fieldset>
@@ -80,9 +82,10 @@ export default function CreateEmployeeForm() {
 					options={stateList}
 					defaultValue={stateList[0]}
 					onChange={(value) => setFormData({ ...formData, state: value })}
+					id="state"
 				/>
 
-				<label htmlFor="zip-code">Zip Code</label>
+				<label htmlFor="zipCode">Zip Code</label>
 				<input type="number" id="zipCode" value={formData.zipCode} onChange={handleChange} />
 			</fieldset>
 
@@ -92,6 +95,7 @@ export default function CreateEmployeeForm() {
 				defaultValue={dptList[0]}
 				value={formData.department}
 				onChange={(value) => setFormData({ ...formData, department: value })}
+				id="department"
 			/>
 
 			<button type="submit" className="save-btn">

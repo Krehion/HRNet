@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import CreateEmployeeForm from "../../components/createEmployeeForm/CreateEmployeeForm";
+import logo from "../../assets/logo.webp";
 
 import "../../style/layout/_createemployee.scss";
 
@@ -8,7 +9,7 @@ export default function CreateEmployee() {
 		<div className="global-container index-bkgd">
 			<div className="form-container">
 				<div className="logo-container">
-					<img src="/src/assets/logo.svg" className="logo" alt="logo" />
+					<img src={logo} className="logo" alt="logo" />
 					<h1>HRNet</h1>
 				</div>
 				<div role="separator" className="separator"></div>

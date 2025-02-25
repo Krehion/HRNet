@@ -8,7 +8,7 @@ export default function CreateEmployee() {
 		<div className="global-container index-bkgd">
 			<div className="form-container">
 				<div className="logo-container">
-					<img src="/src/assets/logo.png" className="logo" />
+					<img src="/src/assets/logo.svg" className="logo" alt="logo" />
 					<h1>HRNet</h1>
 				</div>
 				<div role="separator" className="separator"></div>

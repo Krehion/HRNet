@@ -85,8 +85,8 @@ export default function EmployeeList() {
 	const [employeeList] = useAtom(employeesAtom);
 	const [, fetchEmployees] = useAtom(fetchEmployeesAtom);
 	useEffect(() => {
-		fetchEmployees(); // Fetch employees when component mounts
-	});
+		fetchEmployees();
+	}, [fetchEmployees]); // Dependency array: only run this effect when fetchEmployee changes, not on every render
 
 	const [searchQuery, setSearchQuery] = useState(""); // Store search input
 

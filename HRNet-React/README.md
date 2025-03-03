@@ -1,8 +1,16 @@
-# React + Vite
+# Instructions
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Follow these steps to run the app on your machine:
 
-Currently, two official plugins are available:
+1. Make sure you are in the correct folder "HRNet-React"
+2. Launch json-server to access the database
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+json-server --watch db.json --port 3001
+```
+
+3. Open another terminal and run this command:
+
+```
+npm run dev
+```

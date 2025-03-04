@@ -43,6 +43,10 @@ const columns = [
 	}),
 	columnHelper.accessor("department", {
 		header: () => <span>Department</span>,
+		cell: (info) => {
+			const value = info.getValue();
+			return typeof value === "object" && value !== null ? value.label : value;
+		},
 		footer: (info) => info.column.id,
 		sortingFn: "alphanumeric"
 	}),
@@ -70,7 +74,10 @@ const columns = [
 	}),
 	columnHelper.accessor("state", {
 		header: "State",
-		cell: (info) => info.getValue(),
+		cell: (info) => {
+			const value = info.getValue();
+			return typeof value === "object" && value !== null ? value.label : value;
+		},
 		footer: (info) => info.column.id,
 		sortingFn: "alphanumeric"
 	}),
